@@ -2,13 +2,28 @@
 import random 
 
 
+# Taking input from user properly
+def take_input(string, int_type=False):
+    wrong_input = True
+    while wrong_input == True:
+        try:
+            inp_value = input(string)
+            if int_type == True and inp_value.isdigit() == False:
+                raise TypeError 
+            wrong_input = False
+        # value or type error
+        except ValueError:
+            print("Wrong input. Please try again.")
+        except TypeError:
+            print("Wrong input. Please try again.")
+    return inp_value
+
+
+# Iterative brute-force highest point finder 
 class Q1:
     array = []
     n = 1
     m = 1
-    def __init__(self):
-        print("Question 1")
-
         
     def create_random_array(self, n, m):
         self.n = n
@@ -38,217 +53,110 @@ class Q1:
             print(" ")
     
     
-    # def find_highest_points(self):
-    #     # Brute force algorithm to get the highest points using stack
-    #     stack = []
-    #     max_sum = 0
-    #     max_path = []
-    #     start_point = (0,0)
-    #     stack.append(start_point)
-        
-    #     visited = []
-        
-    #     sum = self.array[0][0]
-    #     while len(stack) > 0:
-    #         current_val = stack.pop()
-    #         if current_val == (self.n-1, self.m-1):
-    #             if sum > max_sum:
-    #                 max_sum = sum
-    #                 max_path = visited
-    #                 # sum = 0
-    #                 # path = []
-    #             print("Path: ", visited)
-    #             print("Sum: ", sum)
-            
-    #         elif (current_val[0], current_val[1]+1) not in visited and self.check_validity(current_val[0], current_val[1]+1):
-    #             current_val = (current_val[0], current_val[1]+1)
-    #             stack.append(current_val)
-    #             print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
-    #             sum += self.array[current_val[0]][current_val[1]]
-    #             visited.append(current_val)
-    #         elif (current_val[0]+1, current_val[1]) not in visited and self.check_validity(current_val[0]+1, current_val[1]):
-    #             current_val = (current_val[0]+1, current_val[1])
-    #             stack.append(current_val)
-    #             print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
-    #             sum += self.array[current_val[0]][current_val[1]]
-    #             visited.append(current_val)            
-    #     return stack  
-
-
-
-    # def find_highest_points(self, max_sum, max_path, sum=0, visited=[], start_point=(0,0)):
-    #     # Brute force algorithm to get the highest points using stack
-    #     finished = False
-    #     stack = []
-    #     stack.append(start_point)
-        
-    #     sum = self.array[0][0]
-    #     while len(stack) > 0:
-    #         current_val = stack.pop()
-    #         if (current_val[0], current_val[1]+1) not in visited and self.check_validity(current_val[0], current_val[1]+1):
-    #             current_val = (current_val[0], current_val[1]+1)
-    #             stack.append(current_val)
-    #             print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
-    #             sum += self.array[current_val[0]][current_val[1]]
-    #             visited.append(current_val)
-    #         if (current_val[0]+1, current_val[1]) not in visited and self.check_validity(current_val[0]+1, current_val[1]):
-    #             current_val = (current_val[0]+1, current_val[1])
-    #             stack.append(current_val)
-    #             print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
-    #             sum += self.array[current_val[0]][current_val[1]]
-    #             visited.append(current_val)         
-    #         if current_val == (self.n-1, self.m-1):
-    #             if sum > max_sum:
-    #                 max_sum = sum
-    #                 max_path = visited
-    #                 print("Path: ", visited)
-    #                 print("Sum: ", sum)
-    #                 print("Popping: ", visited.pop())
-    #                 sum = sum - self.array[current_val[0]][current_val[1]]
-    #                 current_val = visited.pop()
-    #                 self.find_highest_points(max_sum, max_path, sum, visited, stack.pop())
-    #                 # self.find_highest_points(max_sum, max_path, sum, visited, current_val)
-    #             finished = True   
-        
-    #     if finished == False:
-    #         # no successful path found, pop the last element and try again
-    #         visited.pop()
-    #         self.find_highest_points(max_sum, max_path, visited)            
-    #     return stack  
-            
-    
-    def find_highest_points(self, max_sum, max_path, sum=0, visited=[], start_point=(0,0)):
+    def find_highest_points(self, all_points, all_paths):
         # Brute force algorithm to get the highest points using stack
-        finished = False
-        stack = []
-        stack.append(start_point)
-        
-        sum = self.array[0][0]
-        while len(stack) > 0:
-            current_val = stack.pop()
-            if (current_val[0], current_val[1]+1) not in visited and self.check_validity(current_val[0], current_val[1]+1):
-                current_val = (current_val[0], current_val[1]+1)
-                stack.append(current_val)
-                print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
-                sum += self.array[current_val[0]][current_val[1]]
-                visited.append(current_val)
-            if (current_val[0]+1, current_val[1]) not in visited and self.check_validity(current_val[0]+1, current_val[1]):
-                current_val = (current_val[0]+1, current_val[1])
-                stack.append(current_val)
-                print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
-                sum += self.array[current_val[0]][current_val[1]]
-                visited.append(current_val)         
-            if current_val == (self.n-1, self.m-1):
-                if sum > max_sum:
-                    max_sum = sum
-                    max_path = visited
-                    print("Path: ", visited)
-                    print("Sum: ", sum)
-                    print("Popping: ", visited.pop())
-                    sum = sum - self.array[current_val[0]][current_val[1]]
-                    current_val = visited.pop()
-                    self.find_highest_points(max_sum, max_path, sum, visited, stack.pop())
-                    # self.find_highest_points(max_sum, max_path, sum, visited, current_val)
-                finished = True   
-        
-        if finished == False:
-            # no successful path found, pop the last element and try again
-            visited.pop()
-            self.find_highest_points(max_sum, max_path, visited)            
-        return stack  
+        sums = []
+        for i in range(len(all_points)):
+            sum = 0
+            for j in range(len(all_points[i])):
+                sum += all_points[i][j]
+            sums.append(sum)
+        return sums.index(max(sums)), max(sums)
+
     
-    
-    
-    def path_generator(self):
-        paths = []
-        stack = []
-        stack.append((0,0))
-                
-        while len(stack) > 0:
-            current_position = stack.pop()
-            # base case: we have reached the end position
-            if current_position == (self.n-1, self.m-1):
-                # add the current path to the list of paths
-                # stack.append(current_position)
-                print("Path: ", stack)
-                paths.append(stack.copy())
-                continue
-            
-            current_position_temp = current_position
-            if(self.check_y_valid(current_position) == True):
-                print("YCurrent position: ", current_position, " and valid position: ", (current_position[0]+1, current_position[1]))
-                stack.append((current_position[0]+1, current_position[1]))   
-                current_position = (current_position[0]+1, current_position[1])             
-                # print("Path: ", stack)
-            current_position = current_position_temp
-            if(self.check_x_valid(current_position) == True):
-                print("XCurrent position: ", current_position, " and valid position: ", (current_position[0], current_position[1]+1))
-                stack.append((current_position[0], current_position[1]+1))
-                current_position = (current_position[0], current_position[1]+1)
-                # print("Path: ", stack)
-        return paths
-    
-    
+    # Returns the value of the current position inside brackets (to store the every point in the path)
+    def get_value(self, y, x):
+        return [self.array[y][x]]
+
+
+    # Returns the current position inside brackets (to store the every point in the path)
+    def get_path(self, y, x):
+        return [(y, x)]
+
     
     def check_y_valid(self, val):
         if val[0] + 1 < self.n:
             return True
         return False
     
+    
     def check_x_valid(self, val):
         if val[1] + 1 < self.m:
             return True
         return False
-        
-    def check_validity(self, val1, val2):
-        if val1 >= self.n or val2 >= self.m:
-            return False
-        return True
     
-# Taking input from user properly
-def take_input(string, int_type=False):
-    wrong_input = True
-    while wrong_input == True:
-        try:
-            inp_value = input(string)
-            if int_type == True and inp_value.isdigit() == False:
-                raise TypeError 
-            wrong_input = False
-        # value or type error
-        except ValueError:
-            print("Wrong input. Please try again.")
-        except TypeError:
-            print("Wrong input. Please try again.")
-    return inp_value
+    
+    def route_printer(self, route):
+        route_str = ""
+        for i in range(len(route)):
+            route_str += ("A" + str(route[i][0]+1) + "B" + str(route[i][1]+1))
+            if i != len(route)-1:
+                route_str += " -> "
+        return route_str
+
+
+    # Finds all paths and returns the paths
+    def path_generator(self):
+        points = []
+        path_routes = []
+        stack = []
+        stack.append(((0,0), self.get_value(0,0), self.get_path(0,0)))
+        
+        while len(stack) > 0:
+            current_position, point, path = stack.pop()
+            # print("Current position: ", current_position, " and point: ", point)
+            # base case: we have reached the end position
+            if current_position == (self.n-1, self.m-1):
+                # add the current path to the list of paths
+                points.append(point)
+                path_routes.append(path)
+                continue
+            
+            # checking moves in the y direction
+            if(self.check_y_valid(current_position) == True):
+                # print("YCurrent position: ", current_position, " and valid position: ", (current_position[0]+1, current_position[1]))
+                stack.append(((current_position[0]+1, current_position[1]), 
+                              point + self.get_value(current_position[0]+1, current_position[1]),
+                              path + self.get_path(current_position[0]+1, current_position[1])))   
+                
+            # checking moves in the x direction
+            if(self.check_x_valid(current_position) == True):
+                # print("XCurrent position: ", current_position, " and valid position: ", (current_position[0], current_position[1]+1))
+                stack.append(((current_position[0], current_position[1]+1), 
+                              point + self.get_value(current_position[0], current_position[1]+1),
+                              path + self.get_path(current_position[0], current_position[1]+1)))
+        return points, path_routes
+
+
+# class Q2:
+    
         
 
 
 if __name__ == "__main__":
     print("Welcome to the homework 4. \nPress 1 to test part1\nPress 2 to test part2\nPress 3 to test part3")
     # inp = take_input("Enter your choice: ")
-    inp = "1"
+    inp = "2"
     if inp == "1":
         print("Question 1:")
         q1 = Q1()
-        # q1.create_random_array(4, 3)
-        q1.n = 4
-        q1.m = 3
-        q1.array = [
-            [25,30,25],
-            [45,15,11],
-            [1,88,15],
-            [9,4,23]
-        ]
+        n = take_input("Enter n: ")
+        m = take_input("Enter m: ")
+        q1.create_random_array(int(n), int(m))
+        # q1.n = 4
+        # q1.m = 3
+        # q1.array = [
+        #     [25,30,25],
+        #     [45,15,11],
+        #     [1,88,15],
+        #     [9,4,23]
+        # ]
         q1.print_array()
-        max_sum = 0
-        max_path = []
-        paths = q1.path_generator()
-        # print paths properly
-        for path in paths:
-            print("[", path, "]\n")
-            
+        points, paths = q1.path_generator()
+        max_index, sum = q1.find_highest_points(points, paths)
         
-        # print("Highest points are: ", q1.find_highest_points(max_sum, max_path))
+        print("Points: ", points[max_index], " | Sum = ", sum)
+        print("Route: ", q1.route_printer(paths[max_index]))
     elif inp == "2":
         print("Question 2:")
         # Q2()
