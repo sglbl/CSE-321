@@ -133,25 +133,27 @@ class Q2:
     array = []
     size = 0
     
-    def median_index_finder(self):
-        # median_index = 0
-        # if len(self.array) % 2 == 0:
-        #     median_index = (len(self.array)//2 + len(self.array)//2 - 1) / 2
-        # else:
-        #     median_index = self.array[len(self.array)//2]
-        
-        print("Assuming median is the ceiling(size/2)th element if it was sorted")
-        if len(self.array) % 2 == 0:
-            median_index = len(self.array)//2 
+    def median_finder(self, median_index):
+        left = 0
+        right = len(q2.array)-1
+        if len(self.array) % 2 == 1:
+            median = self.find_kth_smallest(size - median_index - 1, left, right)
         else:
-            median_index = len(self.array)//2 + 1
+            median = (self.find_kth_smallest(size - median_index - 1, left, right) + 
+                      self.find_kth_smallest(size - median_index, left, right)) / 2
+        
+        return median
+    
+    def median_index_finder(self):
+        median_index = len(self.array)//2
+        print("Median index: ", median_index)
         return median_index
     
     
     def create_random_array(self, size):
         self.size = size
         for i in range(size):
-            self.array.append(random.randint(0, 40))        
+            self.array.append(random.randint(0, 40))     
         
         
     def print_array(self): 
@@ -160,41 +162,46 @@ class Q2:
     
     def swapper(self, a, b):
         a, b = b, a
+        return a, b
     
     
     def lomuto_partition(self, s, left_index, right_index):
         pivot = self.array[s]  # pivot element 
-        self.swapper(self.array[s], self.array[right_index])
+        self.array[s], self.array[right_index] = self.swapper(self.array[s], self.array[right_index])
 
         iter_index_left = left_index 
         for i in range(left_index, right_index+1):
+            print("i is ", i)
             if self.array[i] < pivot:
-                self.swapper(self.array[i], self.array[iter_index_left])
-                # iter_index = iter_index + 1
-                iter_index_left += 1
+                self.array[i], self.array[iter_index_left] = self.swapper(self.array[i], self.array[iter_index_left])
+                iter_index_left = iter_index_left + 1
             
-        self.swapper(self.array[iter_index_left], self.array[right_index])    
+        self.array[iter_index_left], self.array[right_index] = self.swapper(self.array[iter_index_left], self.array[right_index])    
+        print("Ret val:", iter_index_left)
         return iter_index_left
         
         
     def find_kth_smallest(self, k, left_index, right_index):
         # QUICK SELECT (Finding the kth smallest element which is the median)
         if left_index == right_index:
-            return self.array[right_index] # base case
+            return self.array[left_index] # base case
         
-        s = 0 # pivot index
-        s = self.lomuto_partition(s, 0, self.size-1)
-        print("s: ", s, " left_index: ", left_index, " right_index: ", right_index)
+        s = left_index # pivot index
+        s = self.lomuto_partition(s, left_index, right_index)
+        # print("s: ", s, " left_index: ", left_index, " right_index: ", right_index)
         if s == k:
+            print("s is k: ", s)
             return self.array[s]
         # elif s < k:
         #     return self.find_kth_smallest(k, left_index, s-1)
         # else:  # s > k
         #     return self.find_kth_smallest(k, s+1, right_index)
-        elif s < k:
-            return self.find_kth_smallest(k, left_index, s-1)
-        else:
+        if s < k:
+            print("s is ", s, " k is ", k, " right index: ", right_index)
             return self.find_kth_smallest(k, s+1, right_index)
+        # else:
+        print("3")
+        return self.find_kth_smallest(k, left_index, s-1)
         
 
 
@@ -222,6 +229,7 @@ if __name__ == "__main__":
         
         print("Points: ", points[max_index], " | Sum = ", sum)
         print("Route: ", q1.route_printer(paths[max_index]))
+        
     elif inp == "2":
         print("Question 2:")
         q2 = Q2()
@@ -230,9 +238,8 @@ if __name__ == "__main__":
         q2.print_array()
         median_index = q2.median_index_finder()
         print("Median index: ", median_index)
-        left = 0
-        right = len(q2.array)-1
-        print("Median value: ", q2.find_kth_smallest(median_index, left, right))
+        median = q2.median_finder(median_index)
+        print("Median value: ", median)
         
     elif inp == "3":
         print("Question 3:")
