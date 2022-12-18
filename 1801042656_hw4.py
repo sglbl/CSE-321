@@ -38,42 +38,167 @@ class Q1:
             print(" ")
     
     
-    def find_highest_points(self):
-        # Brute force algorithm to get the highest points using stack
-        stack = []
-        max_sum = 0
-        max_path = []
-        start_point = (0,0)
-        stack.append(start_point)
+    # def find_highest_points(self):
+    #     # Brute force algorithm to get the highest points using stack
+    #     stack = []
+    #     max_sum = 0
+    #     max_path = []
+    #     start_point = (0,0)
+    #     stack.append(start_point)
         
-        visited = []
+    #     visited = []
+        
+    #     sum = self.array[0][0]
+    #     while len(stack) > 0:
+    #         current_val = stack.pop()
+    #         if current_val == (self.n-1, self.m-1):
+    #             if sum > max_sum:
+    #                 max_sum = sum
+    #                 max_path = visited
+    #                 # sum = 0
+    #                 # path = []
+    #             print("Path: ", visited)
+    #             print("Sum: ", sum)
+            
+    #         elif (current_val[0], current_val[1]+1) not in visited and self.check_validity(current_val[0], current_val[1]+1):
+    #             current_val = (current_val[0], current_val[1]+1)
+    #             stack.append(current_val)
+    #             print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
+    #             sum += self.array[current_val[0]][current_val[1]]
+    #             visited.append(current_val)
+    #         elif (current_val[0]+1, current_val[1]) not in visited and self.check_validity(current_val[0]+1, current_val[1]):
+    #             current_val = (current_val[0]+1, current_val[1])
+    #             stack.append(current_val)
+    #             print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
+    #             sum += self.array[current_val[0]][current_val[1]]
+    #             visited.append(current_val)            
+    #     return stack  
+
+
+
+    # def find_highest_points(self, max_sum, max_path, sum=0, visited=[], start_point=(0,0)):
+    #     # Brute force algorithm to get the highest points using stack
+    #     finished = False
+    #     stack = []
+    #     stack.append(start_point)
+        
+    #     sum = self.array[0][0]
+    #     while len(stack) > 0:
+    #         current_val = stack.pop()
+    #         if (current_val[0], current_val[1]+1) not in visited and self.check_validity(current_val[0], current_val[1]+1):
+    #             current_val = (current_val[0], current_val[1]+1)
+    #             stack.append(current_val)
+    #             print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
+    #             sum += self.array[current_val[0]][current_val[1]]
+    #             visited.append(current_val)
+    #         if (current_val[0]+1, current_val[1]) not in visited and self.check_validity(current_val[0]+1, current_val[1]):
+    #             current_val = (current_val[0]+1, current_val[1])
+    #             stack.append(current_val)
+    #             print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
+    #             sum += self.array[current_val[0]][current_val[1]]
+    #             visited.append(current_val)         
+    #         if current_val == (self.n-1, self.m-1):
+    #             if sum > max_sum:
+    #                 max_sum = sum
+    #                 max_path = visited
+    #                 print("Path: ", visited)
+    #                 print("Sum: ", sum)
+    #                 print("Popping: ", visited.pop())
+    #                 sum = sum - self.array[current_val[0]][current_val[1]]
+    #                 current_val = visited.pop()
+    #                 self.find_highest_points(max_sum, max_path, sum, visited, stack.pop())
+    #                 # self.find_highest_points(max_sum, max_path, sum, visited, current_val)
+    #             finished = True   
+        
+    #     if finished == False:
+    #         # no successful path found, pop the last element and try again
+    #         visited.pop()
+    #         self.find_highest_points(max_sum, max_path, visited)            
+    #     return stack  
+            
+    
+    def find_highest_points(self, max_sum, max_path, sum=0, visited=[], start_point=(0,0)):
+        # Brute force algorithm to get the highest points using stack
+        finished = False
+        stack = []
+        stack.append(start_point)
         
         sum = self.array[0][0]
         while len(stack) > 0:
             current_val = stack.pop()
-            if current_val == (self.n-1, self.m-1):
-                if sum > max_sum:
-                    max_sum = sum
-                    max_path = visited
-                    # sum = 0
-                    # path = []
-                print("Path: ", visited)
-                print("Sum: ", sum)
-            
-            elif (current_val[0], current_val[1]+1) not in visited and self.check_validity(current_val[0], current_val[1]+1):
+            if (current_val[0], current_val[1]+1) not in visited and self.check_validity(current_val[0], current_val[1]+1):
                 current_val = (current_val[0], current_val[1]+1)
                 stack.append(current_val)
                 print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
                 sum += self.array[current_val[0]][current_val[1]]
                 visited.append(current_val)
-            elif (current_val[0]+1, current_val[1]) not in visited and self.check_validity(current_val[0]+1, current_val[1]):
+            if (current_val[0]+1, current_val[1]) not in visited and self.check_validity(current_val[0]+1, current_val[1]):
                 current_val = (current_val[0]+1, current_val[1])
                 stack.append(current_val)
                 print("Adding to stack: ", self.array[current_val[0]][current_val[1]])
                 sum += self.array[current_val[0]][current_val[1]]
-                visited.append(current_val)            
+                visited.append(current_val)         
+            if current_val == (self.n-1, self.m-1):
+                if sum > max_sum:
+                    max_sum = sum
+                    max_path = visited
+                    print("Path: ", visited)
+                    print("Sum: ", sum)
+                    print("Popping: ", visited.pop())
+                    sum = sum - self.array[current_val[0]][current_val[1]]
+                    current_val = visited.pop()
+                    self.find_highest_points(max_sum, max_path, sum, visited, stack.pop())
+                    # self.find_highest_points(max_sum, max_path, sum, visited, current_val)
+                finished = True   
+        
+        if finished == False:
+            # no successful path found, pop the last element and try again
+            visited.pop()
+            self.find_highest_points(max_sum, max_path, visited)            
         return stack  
-
+    
+    
+    
+    def path_generator(self):
+        paths = []
+        stack = []
+        stack.append((0,0))
+                
+        while len(stack) > 0:
+            current_position = stack.pop()
+            # base case: we have reached the end position
+            if current_position == (self.n-1, self.m-1):
+                # add the current path to the list of paths
+                # stack.append(current_position)
+                print("Path: ", stack)
+                paths.append(stack.copy())
+                continue
+            
+            current_position_temp = current_position
+            if(self.check_y_valid(current_position) == True):
+                print("YCurrent position: ", current_position, " and valid position: ", (current_position[0]+1, current_position[1]))
+                stack.append((current_position[0]+1, current_position[1]))   
+                current_position = (current_position[0]+1, current_position[1])             
+                # print("Path: ", stack)
+            current_position = current_position_temp
+            if(self.check_x_valid(current_position) == True):
+                print("XCurrent position: ", current_position, " and valid position: ", (current_position[0], current_position[1]+1))
+                stack.append((current_position[0], current_position[1]+1))
+                current_position = (current_position[0], current_position[1]+1)
+                # print("Path: ", stack)
+        return paths
+    
+    
+    
+    def check_y_valid(self, val):
+        if val[0] + 1 < self.n:
+            return True
+        return False
+    
+    def check_x_valid(self, val):
+        if val[1] + 1 < self.m:
+            return True
+        return False
         
     def check_validity(self, val1, val2):
         if val1 >= self.n or val2 >= self.m:
@@ -115,7 +240,15 @@ if __name__ == "__main__":
             [9,4,23]
         ]
         q1.print_array()
-        print("Highest points are: ", q1.find_highest_points2())
+        max_sum = 0
+        max_path = []
+        paths = q1.path_generator()
+        # print paths properly
+        for path in paths:
+            print("[", path, "]\n")
+            
+        
+        # print("Highest points are: ", q1.find_highest_points(max_sum, max_path))
     elif inp == "2":
         print("Question 2:")
         # Q2()
