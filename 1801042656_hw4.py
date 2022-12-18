@@ -137,16 +137,15 @@ class Q2:
         left = 0
         right = len(q2.array)-1
         if len(self.array) % 2 == 1:
-            median = self.find_kth_smallest(size - median_index - 1, left, right)
+            median = self.find_kth_smallest(median_index, left, right)
         else:
-            median = (self.find_kth_smallest(size - median_index - 1, left, right) + 
-                      self.find_kth_smallest(size - median_index, left, right)) / 2
+            median = (self.find_kth_smallest(median_index, left, right) + 
+                      self.find_kth_smallest(median_index-1, left, right)) / 2
         
         return median
     
     def median_index_finder(self):
         median_index = len(self.array)//2
-        print("Median index: ", median_index)
         return median_index
     
     
@@ -171,13 +170,11 @@ class Q2:
 
         iter_index_left = left_index 
         for i in range(left_index, right_index+1):
-            print("i is ", i)
             if self.array[i] < pivot:
                 self.array[i], self.array[iter_index_left] = self.swapper(self.array[i], self.array[iter_index_left])
                 iter_index_left = iter_index_left + 1
             
         self.array[iter_index_left], self.array[right_index] = self.swapper(self.array[iter_index_left], self.array[right_index])    
-        print("Ret val:", iter_index_left)
         return iter_index_left
         
         
@@ -188,20 +185,11 @@ class Q2:
         
         s = left_index # pivot index
         s = self.lomuto_partition(s, left_index, right_index)
-        # print("s: ", s, " left_index: ", left_index, " right_index: ", right_index)
         if s == k:
-            print("s is k: ", s)
             return self.array[s]
-        # elif s < k:
-        #     return self.find_kth_smallest(k, left_index, s-1)
-        # else:  # s > k
-        #     return self.find_kth_smallest(k, s+1, right_index)
-        if s < k:
-            print("s is ", s, " k is ", k, " right index: ", right_index)
-            return self.find_kth_smallest(k, s+1, right_index)
-        # else:
-        print("3")
-        return self.find_kth_smallest(k, left_index, s-1)
+        if s > k:
+            return self.find_kth_smallest(k, left_index, s-1)
+        return self.find_kth_smallest(k, s+1, right_index)
         
 
 
@@ -237,7 +225,6 @@ if __name__ == "__main__":
         q2.create_random_array(size)
         q2.print_array()
         median_index = q2.median_index_finder()
-        print("Median index: ", median_index)
         median = q2.median_finder(median_index)
         print("Median value: ", median)
         
