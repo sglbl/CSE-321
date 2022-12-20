@@ -191,12 +191,105 @@ class Q2:
             return self.find_kth_smallest(k, left_index, s-1)
         return self.find_kth_smallest(k, s+1, right_index)
         
+######### QUESTION 3 ##############
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        
+class LinkedListCircular:
+    
+    def __init__(self) -> None:
+        self.head = None
+        self.size = 0
+        self.current = None
+        
+    def add(self, element):
+        if self.head == None:
+            self.head = Node(element)
+            self.head.next = self.head
+            return
+        element_node = Node(element)
+        element_node.next = self.head
+        temp = self.head
+        while temp.next != self.head:
+            temp = temp.next
+        temp.next = element_node      
+        
+        
+    # Remove which also returns next element
+    def remove(self, element):
+        if self.head != None:
+            temp = self.head
+            while temp.next != self.head:
+                if temp.next.data == element:
+                    temp.next = temp.next.next
+                    return temp.next
+                else:
+                    temp = temp.next
+            # if that data is in the head
+            if temp.next.data == element:
+                temp.next = temp.next.next
+                self.head = temp.next
+                return temp.next
+        return None
+    
+    def remove_next(self):
+        # Using current, removes next
+        if self.current != None:
+            self.current.next = self.current.next.next
+            return self.current.next
+
+    def print_list(self):
+        print("Elements: ", end="")
+        temp = self.head
+        while temp is not None:
+            if temp.next == self.head:
+                print(temp.data)
+            else:
+                print(temp.data, end=" -> ")
+            temp = temp.next  
+            if temp == self.head:
+                break    
+        print("")
+
+        
+class Q3a:
+    linked_list = LinkedListCircular()
+    
+    # def __init__(self) -> None:
+    #     self.linked_list = LinkedListCircular(1)
+    
+    def create_random_elements(self, size):
+        self.linked_list.size = size
+        for i in range(size):
+            self.linked_list.add("P"+str(i+1))     
+        
+    def print_elements(self): 
+        self.linked_list.print_list()
+            
+    def kill_next(self):
+        # current = self.linked_list.remove(self.linked_list.current.next.data)
+        # Remove next using current data
+        current = self.linked_list.remove_next()
+        # Update current
+        self.linked_list.current = current
+        # Update size
+        self.linked_list.size = self.linked_list.size - 1
+
+    def winner_a(self):
+        self.linked_list.current = self.linked_list.head
+        
+        while self.linked_list.size > 1:
+            self.kill_next()
+            
+        return self.linked_list.current.data
 
 
 if __name__ == "__main__":
     print("Welcome to the homework 4. \nPress 1 to test part1\nPress 2 to test part2\nPress 3 to test part3")
     # inp = take_input("Enter your choice: ")
-    inp = "2"
+    inp = "3"
     if inp == "1":
         print("Question 1:")
         q1 = Q1()
@@ -230,6 +323,12 @@ if __name__ == "__main__":
         
     elif inp == "3":
         print("Question 3:")
-        # Q3()
+        q3 = Q3a()
+        n = take_input("Enter n: ")
+        q3.create_random_elements(int(n))
+        q3.print_elements()
+        
+        print("Winner: " , q3.winner_a())
+        
     else:
         print("Error! Wrong input.")
