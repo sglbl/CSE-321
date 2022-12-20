@@ -257,9 +257,6 @@ class LinkedListCircular:
 class Q3a:
     linked_list = LinkedListCircular()
     
-    # def __init__(self) -> None:
-    #     self.linked_list = LinkedListCircular(1)
-    
     def create_random_elements(self, size):
         self.linked_list.size = size
         for i in range(size):
@@ -277,7 +274,7 @@ class Q3a:
         # Update size
         self.linked_list.size = self.linked_list.size - 1
 
-    def winner_a(self):
+    def winner(self):
         self.linked_list.current = self.linked_list.head
         
         while self.linked_list.size > 1:
@@ -285,9 +282,13 @@ class Q3a:
             
         return self.linked_list.current.data
 
+        
+class Q3b:
+    
+    
 
 if __name__ == "__main__":
-    print("Welcome to the homework 4. \nPress 1 to test part1\nPress 2 to test part2\nPress 3 to test part3")
+    print("Welcome to the homework 4. \nPress 1 to test part1\nPress 2 to test part2\nPress 3a to test part3a\nPress 3b to test part3b")
     # inp = take_input("Enter your choice: ")
     inp = "3"
     if inp == "1":
@@ -321,14 +322,23 @@ if __name__ == "__main__":
         median = q2.median_finder(median_index)
         print("Median value: ", median)
         
-    elif inp == "3":
+    elif inp == "3a":
         print("Question 3:")
-        q3 = Q3a()
+        q3a = Q3a()
         n = take_input("Enter n: ")
-        q3.create_random_elements(int(n))
-        q3.print_elements()
+        q3a.create_random_elements(int(n))
+        q3a.print_elements()
         
-        print("Winner: " , q3.winner_a())
+        print("Winner: " , q3a.winner())
+        
+    elif inp == "3b":
+        print("Question 3b:")
+        q3b = Q3b()
+        n = take_input("Enter n: ")
+        q3b.create_random_elements(int(n))
+        q3b.print_elements()
+        
+        print("Winner: " , q3b.winner())
         
     else:
         print("Error! Wrong input.")
