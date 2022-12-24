@@ -257,7 +257,7 @@ class LinkedListCircular:
 class Q3a:
     linked_list = LinkedListCircular()
     
-    def create_random_elements(self, size):
+    def create_elements(self, size):
         self.linked_list.size = size
         for i in range(size):
             self.linked_list.add("P"+str(i+1))     
@@ -285,12 +285,36 @@ class Q3a:
         
 class Q3b:
     
+    def print_elements(self, n): 
+        for i in range(n):
+            if i == n-1:
+                print("P"+str(i+1))
+            else:
+                print("P"+str(i+1), end=" -> ")
     
+    def log_finder(self, n):
+        # Find the log base 2 of n
+        log = 0
+        while n > 1:
+            n = n/2
+            log = log + 1
+        return log
+    
+    def winner(self, n):
+        # Check report 3b for explanation
+        two_to_x = 1
+        while two_to_x <= n/2:
+            if two_to_x*2 > n:
+                break
+            two_to_x = two_to_x*2
+        x = self.log_finder(two_to_x)
+        print(f"Biggest 2^x = {two_to_x} which is smaller than n = {n}. So x = {x}. \nWinner = 2*({n} - 2^{x}) + 1 = 2*({n} - {two_to_x}) + 1")
+        return 2*(n-two_to_x) + 1            
 
 if __name__ == "__main__":
     print("Welcome to the homework 4. \nPress 1 to test part1\nPress 2 to test part2\nPress 3a to test part3a\nPress 3b to test part3b")
-    # inp = take_input("Enter your choice: ")
-    inp = "3"
+    inp = take_input("Enter your choice: ")
+    # inp = "3b"
     if inp == "1":
         print("Question 1:")
         q1 = Q1()
@@ -326,7 +350,7 @@ if __name__ == "__main__":
         print("Question 3:")
         q3a = Q3a()
         n = take_input("Enter n: ")
-        q3a.create_random_elements(int(n))
+        q3a.create_elements(int(n))
         q3a.print_elements()
         
         print("Winner: " , q3a.winner())
@@ -335,10 +359,9 @@ if __name__ == "__main__":
         print("Question 3b:")
         q3b = Q3b()
         n = take_input("Enter n: ")
-        q3b.create_random_elements(int(n))
-        q3b.print_elements()
+        q3b.print_elements(int(n))
         
-        print("Winner: " , q3b.winner())
+        print("Winner: " , "P" + str(q3b.winner(int(n))))
         
     else:
         print("Error! Wrong input.")
