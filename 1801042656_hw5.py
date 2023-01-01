@@ -71,20 +71,6 @@ class Q2:
     
     def print_array(self): 
         print(self.array)
-        
-    def update_min_max(self, number, index):
-        # print(number, index)
-        if self.min_index == -1 and self.max_index == -1:
-            self.min_index = index
-            self.max_index = index
-        if number > self.max and index >= self.min_index:
-            self.max_index = index
-            self.max = number
-        if number < self.min and index <= self.max_index:
-            # if (index < self.max_index) == False:
-            #     print("here index is ", index, " and min index is ", self.min_index, " and min is ", self.min)
-            self.min_index = index
-            self.min = number
     
     def get_half(self, array):
         size_half = len(array) // 2
@@ -96,32 +82,71 @@ class Q2:
     def get_right_array(self, array, size_half):
         return array[size_half:]
     
-    def get_indexes(self):
-        return self.array.index(self.min), self.array.index(self.max)
-
+    def last_occurrence(self, array, value):
+        index = -1
+        while True:
+            try:
+                index = array.index(value, index+1)
+            except ValueError:
+                return index
+        
     # find the biggest difference between two elements in array with recursion
     def a_divide_and_conquer_solver(self, array, length, index):
         # base case
         if length == 1:
-            self.update_min_max(array[0], index)
+            return 0
         else:
             middle_size = self.get_half(array)
             left_array = self.get_left_array(array, middle_size)
             right_array = self.get_right_array(array, middle_size)
             # conquer
-            self.a_divide_and_conquer_solver(left_array, len(left_array), self.array.index(left_array[0]))
-            self.a_divide_and_conquer_solver(right_array, len(right_array),  self.array.index(right_array[0]))
-            # update max and min
+            left_solved = self.a_divide_and_conquer_solver(left_array, len(left_array), self.array.index(left_array[0]))
+            right_solved = self.a_divide_and_conquer_solver(right_array, len(right_array),  self.array.index(right_array[0]))
+            max_min_dif = max(right_array) - min(left_array)
+            
+            # print("left array is ", left_array, " and right array is ", right_array)
+            arr = [left_solved, right_solved, max_min_dif]
+            ind = arr.index(max(arr)) # which has the highest value
+            
+            if ind == 2:
+                self.max = max(right_array)
+                self.min = min(left_array)
+                self.sell_index = self.last_occurrence(self.array, self.max)
+                self.buy_index = self.array.index(min(left_array))
+            elif ind == 0: # left_solved has the max
+                self.max = max(left_array)
+                self.min = min(left_array)
+                self.sell_index = self.last_occurrence(self.array, self.max)
+                self.buy_index = self.array.index(min(left_array))
+            else: # right_solved has the max
+                self.min = min(right_array)
+                self.max = max(right_array)
+                self.buy_index = self.array.index(self.min)
+                self.sell_index = self.last_occurrence(self.array, self.max)
+                
+            return max(left_solved, right_solved, max_min_dif)
     
-    def b_solve_normal(self, array, length):
-        self.max = -1
-        self.min = 1000
-        self.min_index = None
-        self.max_index = None
-        for i in range(length):
-            self.update_min_max(array[i], i) 
- 
-           
+    # b
+    def is_next_smaller(self, array, index):
+        if array[index+1] > array[index]:
+            return False
+        else:
+            return True
+    
+    def b_solve_normal(self, array):
+        profit = 0
+        minimum = array[0]
+        
+        for i in range(len(array)):
+            # update minimum
+            minimum = min(array[i], minimum)
+            difference_with_min = array[i] - minimum
+            # if difference with min is bigger than profit, update profit
+            profit = max(profit, difference_with_min)
+    
+        print(f"2b: Buy on Day{q2.buy_index} for {q2.min} TL and sell on Day{q2.sell_index} for {q2.max}. Profit is {profit} TL")
+
+
 # Dynamic programming
 class Q3:
     array = []
@@ -303,20 +328,19 @@ class Q4:
    
 if __name__ == "__main__":
     print("Welcome to the homework 5. \nPress 1 to test part1\nPress 2 to test part2\nPress 3 to test part3\nPress 4 to test part4")
-    # inp = take_input("Enter your choice: ")
-    inp = "2"
+    inp = take_input("Enter your choice: ")
     if inp == "1":
         print("Question 1:")
-        string1 = "try1"
-        string2 = "trying2"
-        string3 = "trytotest"
-        string4 = "trytotestclass"
-        string5 = "try_divide_and_conquer"
-        string_array = [string1, string2, string3, string4, string5]
+        # string_array = ["try1", "trying2", "trytotest", "trytotestclass", "try_div_and_conq"]
+        n = take_input("Enter number of strings: ")
+        string_array = []
+        for i in range(int(n)):
+            string_array.append(take_input("Enter string: "))
+
         length = len(string_array)
         q1 = Q1()
         val = q1.longest_common_str(string_array, length)
-        print(val)
+        print("Answer:", val)
         
     elif inp.startswith("2"):   
         print("Question 2:")
@@ -326,14 +350,11 @@ if __name__ == "__main__":
         q2.print_array()
         
         print("Solving 2a:")
-        q2.a_divide_and_conquer_solver(q2.array, size, 0)
-        buy_index, sell_index = q2.get_indexes()
-        print(f"2a: Buy on Day{buy_index} for {q2.min} TL and sell on Day{sell_index} for {q2.max}. Profit is {q2.max - q2.min} TL")
-    
-        # print("Solving 2b:")
-        # q2.b_solve_normal(q2.array, size)    
-        # buy_index, sell_index = q2.get_indexes()
-        # print(f"2b: Buy on Day{buy_index} for {q2.min} TL and sell on Day{sell_index} for {q2.max}. Profit is {q2.max - q2.min} TL")    
+        profit= q2.a_divide_and_conquer_solver(q2.array, size, 0)
+        print(f"2a: Buy on Day{q2.buy_index} for {q2.min} TL and sell on Day{q2.sell_index} for {q2.max}. Profit is {profit} TL")
+        
+        print("Solving 2b:")
+        q2.b_solve_normal(q2.array)   # Linear time
         
     elif inp == "3":
         print("Question 3:")
