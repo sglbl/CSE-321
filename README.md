@@ -5,13 +5,13 @@
 Simple Complexity Analysis
 
 ### [Homework 2](https://github.com/sglbl/CSE-321/tree/master/hw2)
-- Binary Search Tree and Master Theorem
+Binary Search Tree and Master Theorem
 
 ### [Homework 3](https://github.com/sglbl/CSE-321/tree/master/hw3)
-- Directed Acyclic Graph & Exhaustive Search
+Directed Acyclic Graph & Exhaustive Search
 
 ### [Homework 4](https://github.com/sglbl/CSE-321/tree/master/hw4)
-- K^th Smallest Element Problem & Josephus Execution problem
+K^th Smallest Element Problem & Josephus Execution problem
 
 ### [Homework 5](https://github.com/sglbl/CSE-321/tree/master/hw5)
-- Dynamic Programming & Divide and Conquer & Greedy Algorithms
+Dynamic Programming & Divide and Conquer & Greedy Algorithms
